@@ -110,6 +110,7 @@ namespace BookmarkManager
             bookmarkManager.LoadBookmarks(jsonFilePath);
             PopulateDataTable();
             SortDataTable("Name");
+            bookmarkGrid.DataSource = bookmarkDT.DefaultView;
         }
 
         private void SortDataTable(string columnName)
