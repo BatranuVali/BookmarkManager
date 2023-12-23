@@ -132,5 +132,15 @@ namespace BookmarkManager
             bookmarkDT.Clear();
             bookmarkDT.Merge(bookmarkManager.CreateDataTable());
         }
+
+        private void Alphabetical_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

@@ -14,7 +14,6 @@ namespace BoomarkManager
 {
     public partial class Tags : Form
     {
-
         public Alphabetical MainForm { get; set; }
         private BookmarkMethods bookmarkManager;
 
@@ -32,13 +31,6 @@ namespace BoomarkManager
         private void Tags_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
-        }
-        private void switchContext_Click(object sender, EventArgs e)
-        {
-            Alphabetical tagsForm = new Alphabetical();
-            tagsForm.TagsForm = this;
-            tagsForm.Show();
-            this.Hide();
         }
 
         private void searchBar_Click(object sender, EventArgs e)
@@ -61,6 +53,27 @@ namespace BoomarkManager
             }
         }
 
+        private void searchBar_Click_1(object sender, EventArgs e)
+        {
 
+        }
+
+        private void treeView1_AfterSelect_1(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
+        private void Tags_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void switchContext_Click_1(object sender, EventArgs e)
+        {
+            Alphabetical tagsForm = new Alphabetical();
+            tagsForm.TagsForm = this;
+            tagsForm.Show();
+            this.Hide();
+        }
     }
 }
