@@ -87,6 +87,7 @@
             this.bookmarkGrid.RowTemplate.Height = 24;
             this.bookmarkGrid.Size = new System.Drawing.Size(733, 472);
             this.bookmarkGrid.TabIndex = 20;
+            this.bookmarkGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.bookmarkGrid_CellContentClick_1);
             // 
             // switchContext
             // 

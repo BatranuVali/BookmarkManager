@@ -128,7 +128,13 @@ namespace BookmarkManager
         {
             if (bookmark.type == "url")
             {
-                dataTable.Rows.Add(bookmark.name, bookmark.url);
+                DataRow existingRow = dataTable.AsEnumerable().FirstOrDefault(row =>
+                    row.Field<string>("Name") == bookmark.name && row.Field<string>("URL") == bookmark.url);
+
+                if (existingRow == null)
+                {
+                    dataTable.Rows.Add(bookmark.name, bookmark.url);
+                }
             }
         }
     }
