@@ -24,6 +24,11 @@ namespace BoomarkManager
             this.FormClosing += Tags_FormClosing;
         }
 
+        private void Tags_Load(object sender, EventArgs e)
+        {
+            PopulateTreeView(treeView1, bookmarkManager.parentNode);
+        }
+
         private void Tags_FormClosing1(object sender, FormClosingEventArgs e)
         {
             throw new NotImplementedException();
@@ -51,11 +56,6 @@ namespace BoomarkManager
 
         }
 
-        private void Tags_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void switchContext_Click_1(object sender, EventArgs e)
         {
             Alphabetical tagsForm = new Alphabetical();
@@ -63,5 +63,38 @@ namespace BoomarkManager
             tagsForm.Show();
             this.Hide();
         }
+
+        private void PopulateTreeView(System.Windows.Forms.TreeView treeView, Node rootNode)
+        {
+
+            TreeNode rootTreeNode = new TreeNode(rootNode.name);
+            rootTreeNode.Tag = rootNode;
+
+
+            treeView.Nodes.Add(rootTreeNode);
+
+
+            AddChildTreeNodes(rootTreeNode, rootNode.children);
+        }
+
+        private void AddChildTreeNodes(TreeNode parentTreeNode, List<Node> childNodes)
+        {
+            foreach (Node childNode in childNodes)
+            {
+                TreeNode childTreeNode = new TreeNode(childNode.name);
+
+                childTreeNode.Tag = childNode;
+
+                parentTreeNode.Nodes.Add(childTreeNode);
+
+                if (childNode.children.Count > 0)
+                {
+                    AddChildTreeNodes(childTreeNode, childNode.children);
+                }
+            }
+        }
+
+
+
     }
 }

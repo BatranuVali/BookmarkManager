@@ -14,10 +14,12 @@ namespace BookmarkManager
     internal class BookmarkMethods
     {
         private List<Bookmark> bookmarks;
-        private List<Node> nodes;
+        internal Node parentNode;
+
         public BookmarkMethods()
         {
             bookmarks = new List<Bookmark>();
+            parentNode = new Node(null, "roots", null, new List<Node>());
         }
         public void LoadBookmarks(string jsonFilePath)
         {
@@ -25,7 +27,7 @@ namespace BookmarkManager
             {
                 string jsonString = File.ReadAllText(jsonFilePath);
                 BookmarkData bookmarkData = JsonConvert.DeserializeObject<BookmarkData>(jsonString);
-                PopulateBookmarksFromDictionary(bookmarkData.roots);
+                PopulateBookmarksFromDictionary(bookmarkData.roots,parentNode);
                 Console.WriteLine($"Number of bookmarks loaded: {bookmarks.Count}");
             }
             catch (Exception ex)
@@ -33,37 +35,14 @@ namespace BookmarkManager
                 Console.WriteLine($"Error loading bookmarks: {ex.Message}");
             }
         }
-        private void PopulateBookmarksFromList(List<Bookmark> bookmarkList)
-        {
-            int i = 0;
-            foreach (var bookmark in bookmarkList)
-            {
-                ProcessBookmark(bookmark);
-
-                if (bookmark.type == "folder")
-                {
-                    i++;
-                    Console.WriteLine($"Entering folder: {bookmark.name}");
-
-                    if (bookmark.children != null)
-                    {
-                        Console.WriteLine($"Folder {bookmark.name} has {bookmark.children.Count} children");
-                        PopulateBookmarksFromList(bookmark.children);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Folder {bookmark.name} has no children");
-                    }
-                }
-            }
-            Console.WriteLine($"You entered the loop {i} times");
-        }
-
-        private void PopulateBookmarksFromDictionary(Dictionary<string, Bookmark> bookmarkDictionary)
+        private void PopulateBookmarksFromDictionary(Dictionary<string, Bookmark> bookmarkDictionary, Node parentNode)
         {
             foreach (var bookmarkPair in bookmarkDictionary)
             {
                 ProcessBookmark(bookmarkPair.Value);
+                Node childNode = new Node(parentNode, bookmarkPair.Value.name, bookmarkPair.Value.url, new List<Node>());
+                parentNode.children.Add(childNode);
+                Console.WriteLine($"Created node: {childNode.name}");
 
                 if (bookmarkPair.Value.type == "folder")
                 {
@@ -72,7 +51,7 @@ namespace BookmarkManager
                     if (bookmarkPair.Value.children != null)
                     {
                         Console.WriteLine($"Folder {bookmarkPair.Value.name} has {bookmarkPair.Value.children.Count} children");
-                        PopulateBookmarksFromList(bookmarkPair.Value.children);
+                        PopulateChildrenFromList(bookmarkPair.Value.children, childNode);
                     }
                     else
                     {
@@ -81,6 +60,23 @@ namespace BookmarkManager
                 }
             }
         }
+
+        private void PopulateChildrenFromList(List<Bookmark> bookmarkList, Node parentNode)
+        {
+            foreach (var bookmark in bookmarkList)
+            {
+                ProcessBookmark(bookmark);
+                Node childNode = new Node(parentNode, bookmark.name, bookmark.url, new List<Node>());
+                parentNode.children.Add(childNode);
+                Console.WriteLine($"Created node: {childNode.name}");
+
+                if (bookmark.type == "folder" && bookmark.children != null)
+                {
+                    PopulateChildrenFromList(bookmark.children, childNode);
+                }
+            }
+        }
+
 
         private void ProcessBookmark(Bookmark bookmark)
         {
