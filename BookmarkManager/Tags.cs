@@ -41,18 +41,6 @@ namespace BoomarkManager
         {
         }
 
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            if (e.Node.Tag != null)
-            {
-                Console.WriteLine($"Selected node: {e.Node.Text}, URL: {e.Node.Tag}");
-            }
-            else
-            {
-                Console.WriteLine($"Selected node: {e.Node.Text}");
-            }
-        }
-
         private void searchBar_Click_1(object sender, EventArgs e)
         {
 

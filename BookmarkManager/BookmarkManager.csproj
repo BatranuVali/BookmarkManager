@@ -58,6 +58,7 @@
     <Compile Include="Alphabetical.Designer.cs">
       <DependentUpon>Alphabetical.cs</DependentUpon>
     </Compile>
+    <Compile Include="Node.cs" />
     <Compile Include="Roots.cs" />
     <Compile Include="Tags.cs">
       <SubType>Form</SubType>

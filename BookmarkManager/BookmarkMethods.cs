@@ -14,6 +14,7 @@ namespace BookmarkManager
     internal class BookmarkMethods
     {
         private List<Bookmark> bookmarks;
+        private List<Node> nodes;
         public BookmarkMethods()
         {
             bookmarks = new List<Bookmark>();
@@ -105,7 +106,6 @@ namespace BookmarkManager
                 if (bookmark.type == "folder" && bookmark.children != null)
                 {
                     PopulateDataTable(bookmark.children, dataTable);
-                    // Recursively process subfolders
                 }
             }
         }
@@ -119,7 +119,6 @@ namespace BookmarkManager
                 if (bookmark.type == "folder" && bookmark.children != null)
                 {
                     PopulateDataTable(bookmark.children, dataTable);
-                    // Recursively process subfolders
                 }
             }
         }
@@ -128,6 +127,7 @@ namespace BookmarkManager
         {
             if (bookmark.type == "url")
             {
+                //Bookmarks are shown only once
                 DataRow existingRow = dataTable.AsEnumerable().FirstOrDefault(row =>
                     row.Field<string>("Name") == bookmark.name && row.Field<string>("URL") == bookmark.url);
 
