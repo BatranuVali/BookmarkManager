@@ -26,6 +26,7 @@ namespace BoomarkManager
 
         private void Tags_Load(object sender, EventArgs e)
         {
+            bookmarkManager.LoadBookmarks("Bookmarks.json");
             PopulateTreeView(treeView1, bookmarkManager.parentNode);
         }
 
