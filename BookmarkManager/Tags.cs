@@ -22,6 +22,7 @@ namespace BoomarkManager
             InitializeComponent();
             bookmarkManager = new BookmarkMethods();
             this.FormClosing += Tags_FormClosing;
+            this.treeView1.NodeMouseClick += TreeView1_NodeMouseClick;
         }
 
         private void Tags_Load(object sender, EventArgs e)
@@ -94,6 +95,19 @@ namespace BoomarkManager
                 }
             }
         }
+        private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            // Get the Node object associated with the clicked TreeNode
+            Node node = (Node)e.Node.Tag;
+
+            // Check if the Node has a URL
+            if (!string.IsNullOrEmpty(node.url))
+            {
+                // Open the URL in a web browser
+                System.Diagnostics.Process.Start(node.url);
+            }
+        }
+
 
 
 
