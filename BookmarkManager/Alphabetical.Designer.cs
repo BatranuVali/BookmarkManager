@@ -225,7 +225,6 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.Controls.Add(this.switchContext, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.label1, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.nameLabel, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.comboBox1, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.deleteButton, 2, 2);
             this.tableLayoutPanel1.Controls.Add(this.newButton, 1, 2);
@@ -233,6 +232,7 @@
             this.tableLayoutPanel1.Controls.Add(this.linkLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.nameInputBox, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.linkInputBox, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.nameLabel, 1, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(17, 25);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;

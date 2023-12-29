@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BoomarkManager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,11 +11,65 @@ using System.Windows.Forms;
 
 namespace BookmarkManager
 {
-    public partial class Form1 : Form
+    public partial class BookmarkAdd : Form
     {
-        public Form1()
+        public Tags TagsForm { get; set; }
+        private BookmarkMethods bookmarkManager;
+
+        public BookmarkAdd()
         {
             InitializeComponent();
+            bookmarkManager = new BookmarkMethods();
+            this.FormClosing += Add_FormClosing;
+        }
+
+        private void Add_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+        private void nameInput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void typeSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void URLinput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void parentSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void nameLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

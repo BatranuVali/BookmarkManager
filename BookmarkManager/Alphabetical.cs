@@ -145,7 +145,7 @@ namespace BookmarkManager
 
         private void bookmarkGrid_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex == 1) // Check if the correct column is double-clicked
+            if (e.RowIndex >= 0 && e.ColumnIndex == 1) 
             {
                 string url = bookmarkDT.Rows[e.RowIndex].ItemArray[1].ToString();
                 System.Diagnostics.Process.Start(url);
