@@ -13,14 +13,21 @@ namespace BookmarkManager
 
     internal class BookmarkMethods
     {
-        private List<Bookmark> bookmarks;
+        internal List<Bookmark> bookmarks;
         internal Node parentNode;
-
+        internal List<string> Folders;
         public BookmarkMethods()
         {
             bookmarks = new List<Bookmark>();
             parentNode = new Node(null, "roots", null, new List<Node>());
+            CreateFolders();
         }
+
+        private void CreateFolders()
+        {
+            Folders = new List<string>();
+        }
+
         public void LoadBookmarks(string jsonFilePath)
         {
             try
@@ -47,7 +54,6 @@ namespace BookmarkManager
                 if (bookmarkPair.Value.type == "folder")
                 {
                     Console.WriteLine($"Entering folder: {bookmarkPair.Value.name}");
-
                     if (bookmarkPair.Value.children != null)
                     {
                         Console.WriteLine($"Folder {bookmarkPair.Value.name} has {bookmarkPair.Value.children.Count} children");
@@ -132,5 +138,26 @@ namespace BookmarkManager
                 }
             }
         }
+
+        internal void AddFolders(List<Bookmark> bookmarkList)
+        {
+            AddFoldersRecursive(bookmarkList);
+            Folders = Folders.Distinct().OrderBy(folder => folder).ToList();
+        }
+
+        private void AddFoldersRecursive(List<Bookmark> bookmarkList)
+        {
+            Folders.Add(parentNode.name);
+
+            foreach (var bookmark in bookmarkList)
+            {
+                if (bookmark.type == "folder")
+                {
+                    Folders.Add(bookmark.name);
+                    AddFoldersRecursive(bookmark.children);
+                }
+            }
+        }
+
     }
 }

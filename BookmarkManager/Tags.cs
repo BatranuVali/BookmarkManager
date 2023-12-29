@@ -16,6 +16,7 @@ namespace BoomarkManager
     {
         public Alphabetical MainForm { get; set; }
         private BookmarkMethods bookmarkManager;
+        internal List<string> Folders;
 
         public Tags()
         {
@@ -29,6 +30,7 @@ namespace BoomarkManager
         {
             bookmarkManager.LoadBookmarks("Bookmarks.json");
             PopulateTreeView(treeView1, bookmarkManager.parentNode);
+            bookmarkManager.AddFolders(bookmarkManager.bookmarks);
         }
 
         private void Tags_FormClosing(object sender, FormClosingEventArgs e)
