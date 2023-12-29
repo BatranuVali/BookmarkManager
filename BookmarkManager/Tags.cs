@@ -97,17 +97,26 @@ namespace BoomarkManager
         }
         private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            // Get the Node object associated with the clicked TreeNode
             Node node = (Node)e.Node.Tag;
 
+            // Check if the Node has a URL
             if (!string.IsNullOrEmpty(node.url))
             {
+                // Open the URL in a web browser
                 System.Diagnostics.Process.Start(node.url);
             }
         }
 
+<<<<<<< HEAD
         private void addButton_Click(object sender, EventArgs e)
         {
 
         }
+=======
+
+
+
+>>>>>>> parent of 834754e (Add try catch for corrupted links)
     }
 }
