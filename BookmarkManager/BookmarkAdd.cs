@@ -25,7 +25,7 @@ namespace BookmarkManager
 
         private void Add_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            this.Hide();
         }
         private void nameInput_TextChanged(object sender, EventArgs e)
         {

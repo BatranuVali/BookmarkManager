@@ -123,7 +123,6 @@ namespace BookmarkManager
         {
             if (bookmark.type == "url")
             {
-                //Bookmarks are shown only once
                 DataRow existingRow = dataTable.AsEnumerable().FirstOrDefault(row =>
                     row.Field<string>("Name") == bookmark.name && row.Field<string>("URL") == bookmark.url);
 

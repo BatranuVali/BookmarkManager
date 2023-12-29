@@ -148,7 +148,14 @@ namespace BookmarkManager
             if (e.RowIndex >= 0 && e.ColumnIndex == 1) 
             {
                 string url = bookmarkDT.Rows[e.RowIndex].ItemArray[1].ToString();
-                System.Diagnostics.Process.Start(url);
+                try
+                {
+                    System.Diagnostics.Process.Start(url);
+                }
+                catch (Exception err)
+                {
+                    Console.WriteLine(err.Message);
+                }
             }
 
         }

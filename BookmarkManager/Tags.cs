@@ -103,7 +103,9 @@ namespace BoomarkManager
 
         private void addButton_Click(object sender, EventArgs e)
         {
-            
+            BookmarkAdd addForm = new BookmarkAdd();
+            addForm.TagsForm = this;
+            addForm.Show();
         }
 
 
