@@ -15,14 +15,14 @@ namespace BookmarkManager
     {
         public Tags TagsForm { get; set; }
         private BookmarkMethods bookmarkManager;
-        internal List<string> Folders;
 
-        public BookmarkAdd()
+        internal List<string> Folders => bookmarkManager.Folders;
+
+        internal BookmarkAdd(BookmarkMethods bookmarkManager)
         {
             InitializeComponent();
-            bookmarkManager = new BookmarkMethods();
+            this.bookmarkManager = bookmarkManager;
             bookmarkManager.AddFolders(bookmarkManager.bookmarks);
-            this.Folders = bookmarkManager.Folders;
             PopulateType();
             PopulateParents();
             this.FormClosing += Add_FormClosing;
@@ -60,7 +60,7 @@ namespace BookmarkManager
         private void PopulateParents()
         {
             parentSelect.Items.Clear();
-            parentSelect.Items.AddRange(bookmarkManager.Folders.ToArray());
+            parentSelect.Items.AddRange(Folders.ToArray());
             parentSelect.SelectedIndex = 0;
         }
         private void nameLabel_Click(object sender, EventArgs e)

@@ -17,7 +17,6 @@ namespace BoomarkManager
         public Alphabetical MainForm { get; set; }
         private BookmarkMethods bookmarkManager;
         internal List<string> Folders;
-
         public Tags()
         {
             InitializeComponent();
@@ -105,7 +104,7 @@ namespace BoomarkManager
 
         private void addButton_Click(object sender, EventArgs e)
         {
-            BookmarkAdd addForm = new BookmarkAdd();
+            BookmarkAdd addForm = new BookmarkAdd(bookmarkManager);
             addForm.TagsForm = this;
             addForm.Show();
         }
