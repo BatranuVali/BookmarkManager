@@ -17,7 +17,7 @@ namespace BookmarkManager
 
         DataTable bookmarkDT = new DataTable();
         public Alphabetical instance;
-        private readonly BookmarkMethods bookmarkManager;
+        internal BookmarkMethods bookmarkManager;
 
         public Alphabetical()
         {

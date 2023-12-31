@@ -15,7 +15,7 @@ namespace BookmarkManager
     {
         public Tags TagsForm { get; set; }
         private BookmarkMethods bookmarkManager;
-
+        internal Bookmark newBookmark = new Bookmark();
         internal List<string> Folders => bookmarkManager.Folders;
 
         internal BookmarkAdd(BookmarkMethods bookmarkManager)
@@ -85,7 +85,27 @@ namespace BookmarkManager
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+            saveButton_Click(sender, e, typeSelect);
+        }
 
+        private void saveButton_Click(object sender, EventArgs e, ComboBox typeSelect)
+        {
+            newBookmark.name=nameInput.Text;
+            newBookmark.type=typeSelect.SelectedItem.ToString();
+            if (typeSelect.SelectedIndex == 1) { newBookmark.url = URLinput.Text; }
+            else newBookmark.url = null;
+            FindParentAndAddNewBookmark(newBookmark);
+        }
+
+        private void FindParentAndAddNewBookmark(Bookmark bookmark)
+        {
+            foreach(var parent in bookmarkManager.bookmarks)
+            {
+                if(parent.name==parentSelect.SelectedItem.ToString())
+                {
+                    parent.children.Add(bookmark);
+                }
+            }
         }
     }
 }
