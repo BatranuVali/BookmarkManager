@@ -16,10 +16,18 @@ namespace BookmarkManager
         internal List<Bookmark> bookmarks;
         internal Node parentNode;
         internal List<string> Folders;
-        public BookmarkMethods()
+        internal BookmarkData bookmarkData;
+        internal BookmarkMethods()
         {
             bookmarks = new List<Bookmark>();
             parentNode = new Node(null, "roots", null, new List<Node>());
+            bookmarkData = new BookmarkData
+            {
+                roots = new Dictionary<string, Bookmark>
+        {
+            { "roots", new Bookmark { name = "roots", children = new List<Bookmark>() } }
+        }
+            };
             CreateFolders();
         }
 
@@ -33,8 +41,22 @@ namespace BookmarkManager
             try
             {
                 string jsonString = File.ReadAllText(jsonFilePath);
-                BookmarkData bookmarkData = JsonConvert.DeserializeObject<BookmarkData>(jsonString);
-                PopulateBookmarksFromDictionary(bookmarkData.roots,parentNode);
+                bookmarkData = JsonConvert.DeserializeObject<BookmarkData>(jsonString);
+
+                if (!bookmarkData.roots.ContainsKey("roots"))
+                {
+                    bookmarkData.roots["roots"] = new Bookmark { name = "roots", children = new List<Bookmark>() };
+                }
+
+                foreach (var bookmarkPair in bookmarkData.roots)
+                {
+                    if (bookmarkPair.Key != "roots")
+                    {
+                        bookmarkData.roots["roots"].children.Add(bookmarkPair.Value);
+                    }
+                }
+
+                PopulateBookmarksFromDictionary(bookmarkData.roots, parentNode);
                 Console.WriteLine($"Number of bookmarks loaded: {bookmarks.Count}");
             }
             catch (Exception ex)
@@ -42,6 +64,8 @@ namespace BookmarkManager
                 Console.WriteLine($"Error loading bookmarks: {ex.Message}");
             }
         }
+
+
         private void PopulateBookmarksFromDictionary(Dictionary<string, Bookmark> bookmarkDictionary, Node parentNode)
         {
             foreach (var bookmarkPair in bookmarkDictionary)
