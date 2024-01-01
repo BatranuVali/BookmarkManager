@@ -64,6 +64,7 @@
     <Compile Include="Alphabetical.Designer.cs">
       <DependentUpon>Alphabetical.cs</DependentUpon>
     </Compile>
+    <Compile Include="Folder.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Roots.cs" />
     <Compile Include="Tags.cs">
@@ -74,6 +75,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="URL.cs" />
     <EmbeddedResource Include="Alphabetical.resx">
       <DependentUpon>Alphabetical.cs</DependentUpon>
     </EmbeddedResource>
