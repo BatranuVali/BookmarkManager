@@ -10,6 +10,6 @@ namespace BookmarkManager
         public string id { get; set; }
         public string name { get; set; }
         public string type { get; set; }
-        public List<Bookmark> children { get; set; }
+        public List<dynamic> children { get; set; }
     }
 }
