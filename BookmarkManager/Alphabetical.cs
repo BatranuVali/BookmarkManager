@@ -111,12 +111,26 @@ namespace BookmarkManager
 
         private void searchBarInput_TextChanged(object sender, EventArgs e)
         {
-
+            PerformSearch(searchBarInput.Text);
         }
 
         private void searchBar_Click(object sender, EventArgs e)
         {
-
+            PerformSearch(searchBarInput.Text);
         }
+
+        private void PerformSearch(string searchQuery)
+        {
+            DataView dataView = bookmarkDT.DefaultView;
+            dataView.RowFilter = $"Name LIKE '%{searchQuery}%' OR URL LIKE '%{searchQuery}%'";
+            bookmarkGrid.DataSource = dataView.ToTable();
+        }
+
+        private void ResetSearch()
+        {
+            searchBarInput.Text = "";
+            bookmarkGrid.DataSource = bookmarkDT.DefaultView;
+        }
+
     }
 }
