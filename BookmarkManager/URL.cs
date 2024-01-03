@@ -1,6 +1,6 @@
 ﻿namespace BookmarkManager
 {
-    internal class URL
+    public class URL
     {
         public string date_added { get; set; }
         public string date_last_used { get; set; }

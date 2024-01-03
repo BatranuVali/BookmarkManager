@@ -1,9 +1,12 @@
-﻿namespace BookmarkManager
+﻿using System.Collections.Generic;
+
+namespace BookmarkManager
 {
-    internal class Rootobject
+    public class Rootobject
     {
-        internal string checksum { get; set; }
-        internal Roots roots { get; set; }
-        internal int version { get; set; }
+        public string checksum { get; set; }
+
+        public Dictionary<string, dynamic> roots = new Dictionary<string, dynamic>();
+        public string version { get; set; }
     }
 }

@@ -17,7 +17,6 @@ namespace BookmarkManager
     {
         public Tags TagsForm { get; set; }
         private BookmarkMethods bookmarkManager;
-        internal Bookmark newBookmark = new Bookmark();
         internal List<string> Folders => bookmarkManager.Folders;
 
         internal BookmarkAdd(BookmarkMethods bookmarkManager)
@@ -92,40 +91,23 @@ namespace BookmarkManager
 
         private void saveButton_Click(object sender, EventArgs e, ComboBox typeSelect)
         {
-            newBookmark.name = nameInput.Text;
-            newBookmark.type = typeSelect.SelectedItem.ToString();
-            if (typeSelect.SelectedIndex == 1) { newBookmark.url = URLinput.Text; }
-            else newBookmark.url = null;
-            FindParentAndAddNewBookmark(newBookmark);
-            AddNewBookmark(bookmarkManager.bookmarkData.roots["roots"], newBookmark);
-            DeleteSurplusOfKeys();
-            SaveBookmarks("Bookmarks.json");
-        }
+            dynamic newBookmark;
 
-        private void DeleteSurplusOfKeys()
-        {
-            List<string> keysToRemove = new List<string>();
-            foreach (var key in bookmarkManager.bookmarkData.roots.Keys)
+            if (typeSelect.SelectedIndex == 1)
             {
-                if (key != "roots")
-                {
-                    keysToRemove.Add(key);
-                }
+                newBookmark = new URL();
+                newBookmark.name = nameInput.Text;
+                newBookmark.type = typeSelect.SelectedItem.ToString();
+                newBookmark.url = URLinput.Text;
             }
-            foreach (var key in keysToRemove)
+            else
             {
-                bookmarkManager.bookmarkData.roots.Remove(key);
+                newBookmark = new Folder();
+                newBookmark.name = nameInput.Text;
+                newBookmark.type = typeSelect.SelectedItem.ToString();
             }
-        }
-        private void FindParentAndAddNewBookmark(Bookmark bookmark)
-        {
-            foreach (var parent in bookmarkManager.bookmarks)
-            {
-                if (parent.name == parentSelect.SelectedItem.ToString())
-                {
-                    parent.children.Add(bookmark);
-                }
-            }
+            bookmarkManager.ConvertDeserializedToSerializationStructure(bookmarkManager.bookmarkData,newBookmark,parentSelect.SelectedItem.ToString());
+            SaveBookmarks("Bookmarks.json");
         }
         public void SaveBookmarks(string jsonFilePath)
         {
@@ -136,10 +118,7 @@ namespace BookmarkManager
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                     Formatting = Formatting.Indented
                 };
-
-                bookmarkManager.bookmarkData.roots["roots"].children = bookmarkManager.bookmarks;
-
-                string jsonString = JsonConvert.SerializeObject(bookmarkManager.bookmarkData, settings);
+                string jsonString = JsonConvert.SerializeObject(bookmarkManager.roots,settings);
                 File.WriteAllText(jsonFilePath, jsonString);
                 Console.WriteLine("Bookmarks saved successfully.");
             }
@@ -148,25 +127,5 @@ namespace BookmarkManager
                 Console.WriteLine($"Error saving bookmarks: {ex.Message}");
             }
         }
-
-
-        private void AddNewBookmark(Bookmark parentBookmark, Bookmark newBookmark)
-        {
-            if (parentBookmark.name == parentSelect.SelectedItem.ToString())
-            {
-                parentBookmark.children.Add(newBookmark);
-                return;
-            }
-
-            if (parentBookmark.children != null)
-            {
-                foreach (var childBookmark in parentBookmark.children)
-                {
-                    AddNewBookmark(childBookmark, newBookmark);
-                }
-            }
-        }
-
-
     }
 }
