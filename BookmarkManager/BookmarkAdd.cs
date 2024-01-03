@@ -54,7 +54,7 @@ namespace BookmarkManager
         }
         private void PopulateType()
         {
-            List<string> items = new List<string>() { "Folder", "URL" };
+            List<string> items = new List<string>() { "folder", "url" };
             typeSelect.Items.AddRange(items.ToArray());
             typeSelect.SelectedIndex = 0;
         }
@@ -109,6 +109,9 @@ namespace BookmarkManager
             }
             bookmarkManager.ConvertDeserializedToSerializationStructure(bookmarkManager.bookmarkData,newBookmark,parentSelect.SelectedItem.ToString());
             SaveBookmarks("Bookmarks.json");
+            BookmarkAdd newForm = new BookmarkAdd(bookmarkManager);
+            newForm.Show();
+            this.Close();
         }
         public void SaveBookmarks(string jsonFilePath)
         {
