@@ -74,6 +74,8 @@ namespace BoomarkManager
 
 
             AddChildTreeNodes(rootTreeNode, rootNode.children);
+
+            treeView.ExpandAll();
         }
 
         private void AddChildTreeNodes(TreeNode parentTreeNode, List<Node> childNodes)
@@ -94,11 +96,47 @@ namespace BoomarkManager
         }
         private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            if (e.Button == MouseButtons.Right)
+            {
+                treeView1.SelectedNode = e.Node;
+                ContextMenuStrip contextMenu = new ContextMenuStrip();
+                ToolStripMenuItem deleteMenuItem = new ToolStripMenuItem("Delete");
+                deleteMenuItem.Click += DeleteMenuItem_Click;
+                contextMenu.Items.Add(deleteMenuItem);
+                contextMenu.Show(treeView1, e.Location);
+            }
             Node node = (Node)e.Node.Tag;
 
             if (!string.IsNullOrEmpty(node.url))
             {
-                System.Diagnostics.Process.Start(node.url);
+                try 
+                {
+                    System.Diagnostics.Process.Start(node.url); 
+                }
+                catch (Exception err)
+                {
+                    Console.WriteLine(err.Message);
+                }
+                
+            }
+        }
+        private void DeleteMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode != null)
+            {
+                Node selectedNode = (Node)treeView1.SelectedNode.Tag;
+                if (selectedNode.parent != null)
+                {
+                    selectedNode.parent.children.Remove(selectedNode);
+                }
+                else
+                {
+                    Console.WriteLine("Root node cannot be deleted!");
+                    return;
+                }
+
+                treeView1.Nodes.Clear();
+                PopulateTreeView(treeView1, bookmarkManager.parentNode);
             }
         }
 
