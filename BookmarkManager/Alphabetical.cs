@@ -32,43 +32,6 @@ namespace BookmarkManager
         {
             bookmarkGrid.DataSource = bookmarkDT.DefaultView;
         }
-
-        private void linkInputBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void nameInputBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            String name = nameInputBox.Text;
-            String link = linkInputBox.Text;
-            bookmarkDT.Rows.Add(link, name);
-            newButton_Click(sender, e);
-        }
-
-        private void newButton_Click(object sender, EventArgs e)
-        {
-            linkInputBox.Text = "";
-            nameInputBox.Text = "";
-        }
-
-        private void deleteButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                bookmarkDT.Rows[bookmarkGrid.CurrentCell.RowIndex].Delete();
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine(err.Message);
-            }
-        }
-
         private void Bokmark_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
@@ -81,20 +44,6 @@ namespace BookmarkManager
             tagsForm.Show();
             this.Hide();
         }
-
-        private void bookmarkGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                nameInputBox.Text = bookmarkDT.Rows[bookmarkGrid.CurrentCell.RowIndex].ItemArray[0].ToString();
-                linkInputBox.Text = bookmarkDT.Rows[bookmarkGrid.CurrentCell.RowIndex].ItemArray[1].ToString();
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine(err.Message);
-            }
-        }
-
         private void bookmarkGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == 0)
@@ -160,5 +109,14 @@ namespace BookmarkManager
 
         }
 
+        private void searchBarInput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void searchBar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

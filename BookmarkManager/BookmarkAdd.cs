@@ -110,6 +110,10 @@ namespace BookmarkManager
             bookmarkManager.ConvertDeserializedToSerializationStructure(bookmarkManager.bookmarkData,newBookmark,parentSelect.SelectedItem.ToString());
             SaveBookmarks("Bookmarks.json");
             BookmarkAdd newForm = new BookmarkAdd(bookmarkManager);
+
+            Tags newTags = new Tags();
+            TagsForm.Hide();
+            newTags.Show();
             newForm.Show();
             this.Close();
         }

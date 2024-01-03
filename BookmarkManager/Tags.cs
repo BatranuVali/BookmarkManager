@@ -47,7 +47,7 @@ namespace BoomarkManager
 
         private void searchBar_Click_1(object sender, EventArgs e)
         {
-
+            PerformSearch(searchBarInput.Text);
         }
 
         private void treeView1_AfterSelect_1(object sender, TreeViewEventArgs e)
@@ -109,6 +109,74 @@ namespace BoomarkManager
             addForm.Show();
         }
 
+        private void searchBarInput_TextChanged_1(object sender, EventArgs e)
+        {
+        }
+        private void PerformSearch(string searchQuery)
+        {
+            // Clear the previous selection
+            treeView1.SelectedNode = null;
 
+            // Traverse the nodes and filter based on the search query
+            foreach (TreeNode node in treeView1.Nodes)
+            {
+                SearchNode(node, searchQuery);
+            }
+        }
+
+        private bool SearchNode(TreeNode node, string searchQuery)
+        {
+            bool nodeMatches = false;
+
+            foreach (TreeNode childNode in node.Nodes)
+            {
+                // Recursively search child nodes
+                bool childMatches = SearchNode(childNode, searchQuery);
+
+                // Perform case-insensitive search on the current node's text
+                bool currentNodeMatches = childNode.Text.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                // Update visibility based on search results
+                childNode.BackColor = treeView1.BackColor;
+
+                if (currentNodeMatches || childMatches)
+                {
+                    // Match found, highlight or handle as needed
+                    childNode.BackColor = ColorTranslator.FromHtml("#273512");
+                    nodeMatches = true;
+                }
+
+                // Update visibility of parent nodes
+                node.Expand();
+                node.Collapse();
+
+                // Set node visibility
+                node.ExpandAll();
+                node.BackColor = nodeMatches ? ColorTranslator.FromHtml("#273512") : treeView1.BackColor;
+            }
+
+            return nodeMatches;
+        }
+
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
