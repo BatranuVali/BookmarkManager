@@ -105,6 +105,7 @@ namespace BookmarkManager
                 newBookmark = new Folder();
                 newBookmark.name = nameInput.Text;
                 newBookmark.type = typeSelect.SelectedItem.ToString();
+                newBookmark.children= new List<dynamic>();
             }
             bookmarkManager.ConvertDeserializedToSerializationStructure(bookmarkManager.bookmarkData,newBookmark,parentSelect.SelectedItem.ToString());
             SaveBookmarks("Bookmarks.json");

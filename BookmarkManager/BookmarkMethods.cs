@@ -95,7 +95,7 @@ namespace BookmarkManager
         {
                 foreach (var bookmark in bookmarkList)
                 {
-                    if (bookmark.type == "folder" && bookmark.children != null)
+                    if (bookmark.type == "folder")
                     {
                     Folder child = new Folder();
                     child.name = bookmark.name;
@@ -105,47 +105,12 @@ namespace BookmarkManager
                     child.guid = bookmark.guid;
                     child.type = bookmark.type;
                     parent.children.Add(child);
-                    if (parent.name == parentName)
-                    {
-                        parent.children.Add(newBookmark);
-                    }
-                    PopulateFolderChildrenFromList(child,newBookmark, parentName);
-                    }
-                else
-                {
-                    URL url = new URL();
-                    url.name = bookmark.name;
-                    url.date_added = bookmark.date_added;
-                    url.date_last_used = bookmark.date_last_used;
-                    url.id = bookmark.id;
-                    url.guid = bookmark.guid;
-                    url.type = bookmark.type;
-                    url.url = bookmark.url;
-                    parent.children.Add(url);
-                }
-                }
-        }
 
-        private void PopulateFolderChildrenFromList(Folder parent, dynamic newBookmark, string parentName)
-        {
-            foreach (var bookmark in parent.children)
-            {
-                if (bookmark.type == "folder" && bookmark.children != null)
-                {
-                    Folder child = new Folder();
-                    child.name = bookmark.name;
-                    child.date_added = bookmark.date_added;
-                    child.date_last_used = bookmark.date_last_used;
-                    child.id = bookmark.id;
-                    child.guid = bookmark.guid;
-                    child.type = bookmark.type;
-                    parent.children.Add(child);
-                    if (parent.name == parentName)
+                    if (bookmark.children != null)
                     {
-                        parent.children.Add(newBookmark);
+                        PopulateFolderChildrenFromList(bookmark.children,child, newBookmark, parentName);
                     }
-                    PopulateFolderChildrenFromList( child, newBookmark, parentName);
-                }
+                    }
                 else
                 {
                     URL url = new URL();
@@ -158,9 +123,12 @@ namespace BookmarkManager
                     url.url = bookmark.url;
                     parent.children.Add(url);
                 }
+                }
+            if (parent.name == parentName)
+            {
+                parent.children.Add(newBookmark);
             }
         }
-
         private void CreateFolders()
         {
             Folders = new List<string>();
