@@ -16,6 +16,7 @@ namespace BookmarkManager
         internal List<Bookmark> bookmarks;
         internal Node parentNode;
         internal List<string> Folders;
+        internal List<string> keys;
         internal BookmarkData bookmarkData;
         internal Rootobject roots;
         internal BookmarkMethods()
@@ -24,110 +25,70 @@ namespace BookmarkManager
             parentNode = new Node(null, "roots", null, new List<Node>());
             CreateFolders();
             roots = new Rootobject();
+            keys = new List<string>();
         }
         internal void ConvertDeserializedToSerializationStructure(BookmarkData bookmarkData, dynamic newBookmark, string parentName)
         {
             roots.checksum = bookmarkData.checksum;
             roots.version = bookmarkData.version;
-            StartConversion(bookmarkData.roots, newBookmark, parentName);
+            StartConversion(bookmarkData.roots, newBookmark, parentName,keys);
         }
 
-        internal void StartConversion(Dictionary<string, Bookmark> bookmarkDictionary, dynamic newBookmark, string parentName)
+        internal void StartConversion(Dictionary<string, Bookmark> bookmarkDictionary, dynamic newBookmark, string parentName, List<string> keys)
         {
-            foreach (var bookmarkPair in bookmarkDictionary)
+            foreach (var key in keys)
             {
-                if (bookmarkPair.Value.type == "url")
+                foreach (var bookmarkPair in bookmarkDictionary)
                 {
-                    URL url = new URL
+                    if (bookmarkPair.Key == key)
                     {
-                        name = bookmarkPair.Value.name,
-                        date_added = bookmarkPair.Value.date_added,
-                        date_last_used = bookmarkPair.Value.date_last_used,
-                        id = bookmarkPair.Value.id,
-                        guid = bookmarkPair.Value.guid,
-                        type = bookmarkPair.Value.type,
-                        url = bookmarkPair.Value.url
-                    };
-                    roots.roots.Add(bookmarkPair.Value.name, url);
-                }
-                else
-                {
-                    Folder folder = new Folder
-                    {
-                        name = bookmarkPair.Value.name,
-                        date_added = bookmarkPair.Value.date_added,
-                        date_last_used = bookmarkPair.Value.date_last_used,
-                        id = bookmarkPair.Value.id,
-                        guid = bookmarkPair.Value.guid,
-                        type = bookmarkPair.Value.type
-                    };
-
-                    if (bookmarkPair.Key != null)
-                    {
-                        Dictionary<string, Bookmark> nestedDictionary = new Dictionary<string, Bookmark>();
-                        nestedDictionary.Add(bookmarkPair.Key, bookmarkPair.Value);
-                        dynamic nestedObject = ProcessNestedDictionary(nestedDictionary, newBookmark, parentName);
-                        roots.roots.Add(bookmarkPair.Key, nestedObject);
-                    }
-                    else
-                    {
-                        roots.roots.Add(bookmarkPair.Value.name, folder);
-                    }
-
-                    if (bookmarkPair.Value.name == parentName)
-                    {
-                        bookmarkPair.Value.children.Add(newBookmark);
-                    }
-
-                    if (bookmarkPair.Value.children != null)
-                    {
-                        PopulateFolderChildrenFromList(bookmarkPair.Value.children, folder, newBookmark, parentName);
+                        AddElements(key,bookmarkPair, newBookmark, parentName);
                     }
                 }
             }
         }
-
-        internal dynamic ProcessNestedDictionary(Dictionary<string, Bookmark> nestedDictionary, dynamic newBookmark, string parentName)
+        private void AddElements(string key,dynamic bookmarkPair, dynamic newBookmark, string parentName)
         {
-            dynamic nestedObject = null;
-
-            foreach (var nestedPair in nestedDictionary)
+            if (bookmarkPair.Value.type == "url")
             {
-                Folder nestedFolder = new Folder
+                URL url = new URL
                 {
-                    name = nestedPair.Value.name,
-                    date_added = nestedPair.Value.date_added,
-                    date_last_used = nestedPair.Value.date_last_used,
-                    id = nestedPair.Value.id,
-                    guid = nestedPair.Value.guid,
-                    type = nestedPair.Value.type
+                    name = bookmarkPair.Value.name,
+                    date_added = bookmarkPair.Value.date_added,
+                    date_last_used = bookmarkPair.Value.date_last_used,
+                    id = bookmarkPair.Value.id,
+                    guid = bookmarkPair.Value.guid,
+                    type = bookmarkPair.Value.type,
+                    url = bookmarkPair.Value.url
                 };
+                roots.roots.Add(key, url);
+            }
+            else
+            {
+                Folder folder = new Folder
+                {
+                    name = bookmarkPair.Value.name,
+                    date_added = bookmarkPair.Value.date_added,
+                    date_last_used = bookmarkPair.Value.date_last_used,
+                    id = bookmarkPair.Value.id,
+                    guid = bookmarkPair.Value.guid,
+                    type = bookmarkPair.Value.type
+                };
+                roots.roots.Add(key, folder);
 
-                if (nestedPair.Key != null)
+                if (bookmarkPair.Value.name == parentName)
                 {
-                    Dictionary<string, Bookmark> innerNestedDictionary = new Dictionary<string, Bookmark>();
-                    innerNestedDictionary.Add(nestedPair.Key, nestedPair.Value);
-                    nestedObject = ProcessNestedDictionary(innerNestedDictionary, newBookmark, parentName);
-                    roots.roots.Add(nestedPair.Key, nestedObject);
-                }
-                else
-                {
-                    roots.roots.Add(nestedPair.Value.name, nestedFolder);
+                    bookmarkPair.Value.children.Add(newBookmark);
                 }
 
-                if (nestedPair.Value.name == parentName)
+                if (bookmarkPair.Value.children != null)
                 {
-                    nestedPair.Value.children.Add(newBookmark);
-                }
-
-                if (nestedPair.Value.children != null)
-                {
-                    PopulateFolderChildrenFromList(nestedPair.Value.children, nestedFolder, newBookmark, parentName);
+                    PopulateFolderChildrenFromList(bookmarkPair.Value.children, folder, newBookmark, parentName);
                 }
             }
-
-            return nestedObject;
         }
+       
+        
 
 
         private void PopulateFolderChildrenFromList(List<Bookmark> bookmarkList,Folder parent, dynamic newBookmark, string parentName)
@@ -212,6 +173,7 @@ namespace BookmarkManager
                 string jsonString = File.ReadAllText(jsonFilePath);
                 bookmarkData = JsonConvert.DeserializeObject<BookmarkData>(jsonString);
                 PopulateBookmarksFromDictionary(bookmarkData.roots, parentNode);
+                GetKeys(bookmarkData,keys);
                 Console.WriteLine($"Number of bookmarks loaded: {bookmarks.Count}");
             }
             catch (Exception ex)
@@ -220,6 +182,13 @@ namespace BookmarkManager
             }
         }
 
+        private void GetKeys(BookmarkData bookmarkData,List<string>keys)
+        {
+            foreach(var key in bookmarkData.roots.Keys)
+            {
+                keys.Add(key);
+            }
+        }
 
         private void PopulateBookmarksFromDictionary(Dictionary<string, Bookmark> bookmarkDictionary, Node parentNode)
         {
