@@ -107,8 +107,8 @@ namespace BookmarkManager
                 newBookmark.type = typeSelect.SelectedItem.ToString();
                 newBookmark.children= new List<dynamic>();
             }
-            bookmarkManager.ConvertDeserializedToSerializationStructure(bookmarkManager.bookmarkData,newBookmark,parentSelect.SelectedItem.ToString());
-            SaveBookmarks("Bookmarks.json");
+            bookmarkManager.ConvertDeserializedToSerializationStructure(bookmarkManager.bookmarkData,newBookmark,parentSelect.SelectedItem.ToString(),null,null);
+            bookmarkManager.SaveBookmarks("Bookmarks.json");
             BookmarkAdd newForm = new BookmarkAdd(bookmarkManager);
 
             Tags newTags = new Tags();
@@ -117,23 +117,6 @@ namespace BookmarkManager
             newForm.Show();
             this.Close();
         }
-        public void SaveBookmarks(string jsonFilePath)
-        {
-            try
-            {
-                var settings = new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    Formatting = Formatting.Indented
-                };
-                string jsonString = JsonConvert.SerializeObject(bookmarkManager.roots,settings);
-                File.WriteAllText(jsonFilePath, jsonString);
-                Console.WriteLine("Bookmarks saved successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving bookmarks: {ex.Message}");
-            }
-        }
+        
     }
 }

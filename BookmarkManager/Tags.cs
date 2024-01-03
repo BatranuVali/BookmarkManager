@@ -107,7 +107,7 @@ namespace BoomarkManager
             }
             Node node = (Node)e.Node.Tag;
 
-            if (!string.IsNullOrEmpty(node.url))
+            if (!string.IsNullOrEmpty(node.url) && e.Button == MouseButtons.Left)
             {
                 try 
                 {
@@ -134,9 +134,13 @@ namespace BoomarkManager
                     Console.WriteLine("Root node cannot be deleted!");
                     return;
                 }
+                bookmarkManager.ConvertDeserializedToSerializationStructure(bookmarkManager.bookmarkData,null,null,treeView1.SelectedNode.Text.ToString(),treeView1.SelectedNode.Parent.Text.ToString());
+                bookmarkManager.SaveBookmarks("Bookmarks.json");
 
-                treeView1.Nodes.Clear();
-                PopulateTreeView(treeView1, bookmarkManager.parentNode);
+                Tags newTags = new Tags();
+                newTags.Show();
+                this.Hide();
+             
             }
         }
 

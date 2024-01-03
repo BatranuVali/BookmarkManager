@@ -27,14 +27,14 @@ namespace BookmarkManager
             roots = new Rootobject();
             keys = new List<string>();
         }
-        internal void ConvertDeserializedToSerializationStructure(BookmarkData bookmarkData, dynamic newBookmark, string parentName)
+        internal void ConvertDeserializedToSerializationStructure(BookmarkData bookmarkData, dynamic newBookmark, string parentName, string deletedName,string deletedParent)
         {
             roots.checksum = bookmarkData.checksum;
             roots.version = bookmarkData.version;
-            StartConversion(bookmarkData.roots, newBookmark, parentName,keys);
+            StartConversion(bookmarkData.roots, newBookmark, parentName,keys,deletedName,deletedParent);
         }
 
-        internal void StartConversion(Dictionary<string, Bookmark> bookmarkDictionary, dynamic newBookmark, string parentName, List<string> keys)
+        internal void StartConversion(Dictionary<string, Bookmark> bookmarkDictionary, dynamic newBookmark, string parentName, List<string> keys, string deletedName, string deletedParent)
         {
             foreach (var key in keys)
             {
@@ -42,86 +42,114 @@ namespace BookmarkManager
                 {
                     if (bookmarkPair.Key == key)
                     {
-                        AddElements(key,bookmarkPair, newBookmark, parentName);
+                        AddElements(key,bookmarkPair, newBookmark, parentName,deletedName,deletedParent);
                     }
                 }
             }
         }
-        private void AddElements(string key,dynamic bookmarkPair, dynamic newBookmark, string parentName)
+        private void AddElements(string key,dynamic bookmarkPair, dynamic newBookmark, string parentName, string deletedName, string deletedParent)
         {
-            if (bookmarkPair.Value.type == "url")
+            if (bookmarkPair.Value.name != deletedName)
             {
-                URL url = new URL
+                if (bookmarkPair.Value.type == "url")
                 {
-                    name = bookmarkPair.Value.name,
-                    date_added = bookmarkPair.Value.date_added,
-                    date_last_used = bookmarkPair.Value.date_last_used,
-                    id = bookmarkPair.Value.id,
-                    guid = bookmarkPair.Value.guid,
-                    type = bookmarkPair.Value.type,
-                    url = bookmarkPair.Value.url
-                };
-                roots.roots.Add(key, url);
-            }
-            else
-            {
-                Folder folder = new Folder
-                {
-                    name = bookmarkPair.Value.name,
-                    date_added = bookmarkPair.Value.date_added,
-                    date_last_used = bookmarkPair.Value.date_last_used,
-                    id = bookmarkPair.Value.id,
-                    guid = bookmarkPair.Value.guid,
-                    type = bookmarkPair.Value.type
-                };
-                roots.roots.Add(key, folder);
-
-                if (bookmarkPair.Value.name == parentName)
-                {
-                    bookmarkPair.Value.children.Add(newBookmark);
+                    URL url = new URL
+                    {
+                        name = bookmarkPair.Value.name,
+                        date_added = bookmarkPair.Value.date_added,
+                        date_last_used = bookmarkPair.Value.date_last_used,
+                        id = bookmarkPair.Value.id,
+                        guid = bookmarkPair.Value.guid,
+                        type = bookmarkPair.Value.type,
+                        url = bookmarkPair.Value.url
+                    };
+                    roots.roots.Add(key, url);
                 }
-
-                if (bookmarkPair.Value.children != null)
+                else
                 {
-                    PopulateFolderChildrenFromList(bookmarkPair.Value.children, folder, newBookmark, parentName);
+                    Folder folder = new Folder
+                    {
+                        name = bookmarkPair.Value.name,
+                        date_added = bookmarkPair.Value.date_added,
+                        date_last_used = bookmarkPair.Value.date_last_used,
+                        id = bookmarkPair.Value.id,
+                        guid = bookmarkPair.Value.guid,
+                        type = bookmarkPair.Value.type
+                    };
+                    roots.roots.Add(key, folder);
+
+                    if (bookmarkPair.Value.name == parentName && parentName != null)
+                    {
+                        bookmarkPair.Value.children.Add(newBookmark);
+                    }
+                    if (bookmarkPair.Value.name == parentName&&parentName!=null)
+                    {
+                        PopulateFolderChildrenFromList(bookmarkPair.Value.children, folder, newBookmark, parentName, deletedName, deletedParent);
+                        return;
+                    }
+
+                    if (bookmarkPair.Value.children != null)
+                    {
+                        PopulateFolderChildrenFromList(bookmarkPair.Value.children, folder, newBookmark, parentName, deletedName, deletedParent);
+                    }
                 }
             }
         }
-       
-        
+        public void SaveBookmarks(string jsonFilePath)
+        {
+            try
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Formatting = Formatting.Indented
+                };
+                string jsonString = JsonConvert.SerializeObject(roots, settings);
+                File.WriteAllText(jsonFilePath, jsonString);
+                Console.WriteLine("Bookmarks saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving bookmarks: {ex.Message}");
+            }
+        }
 
 
-        private void PopulateFolderChildrenFromList(List<Bookmark> bookmarkList,Folder parent, dynamic newBookmark, string parentName)
+
+        private void PopulateFolderChildrenFromList(List<Bookmark> bookmarkList,Folder parent, dynamic newBookmark, string parentName, string deletedName, string deletedParent)
         {
                 foreach (var bookmark in bookmarkList)
                 {
+                if (bookmark.name != deletedName)
+                {
                     if (bookmark.type == "folder")
                     {
-                    Folder child = new Folder();
-                    child.name = bookmark.name;
-                    child.date_added = bookmark.date_added;
-                    child.date_last_used = bookmark.date_last_used;
-                    child.id = bookmark.id;
-                    child.guid = bookmark.guid;
-                    child.type = bookmark.type;
-                    parent.children.Add(child);
+                        Folder child = new Folder();
+                        child.name = bookmark.name;
+                        child.date_added = bookmark.date_added;
+                        child.date_last_used = bookmark.date_last_used;
+                        child.id = bookmark.id;
+                        child.guid = bookmark.guid;
+                        child.type = bookmark.type;
+                        parent.children.Add(child);
 
-                    if (bookmark.children != null)
+                        if (bookmark.children != null)
+                        {
+                            PopulateFolderChildrenFromList(bookmark.children, child, newBookmark, parentName, deletedName, deletedParent);
+                        }
+                    }
+                    else
                     {
-                        PopulateFolderChildrenFromList(bookmark.children,child, newBookmark, parentName);
+                        URL url = new URL();
+                        url.name = bookmark.name;
+                        url.date_added = bookmark.date_added;
+                        url.date_last_used = bookmark.date_last_used;
+                        url.id = bookmark.id;
+                        url.guid = bookmark.guid;
+                        url.type = bookmark.type;
+                        url.url = bookmark.url;
+                        parent.children.Add(url);
                     }
-                    }
-                else
-                {
-                    URL url = new URL();
-                    url.name = bookmark.name;
-                    url.date_added = bookmark.date_added;
-                    url.date_last_used = bookmark.date_last_used;
-                    url.id = bookmark.id;
-                    url.guid = bookmark.guid;
-                    url.type = bookmark.type;
-                    url.url = bookmark.url;
-                    parent.children.Add(url);
                 }
                 }
             if (parent.name == parentName)
