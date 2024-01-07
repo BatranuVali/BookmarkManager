@@ -2,7 +2,7 @@
 
 namespace BookmarkManager
 {
-    public class Folder
+    public class Folder:Base
     {
         public Folder() 
         {
@@ -16,12 +16,5 @@ namespace BookmarkManager
 
         }
         public List<dynamic> children { get; set; }
-        public string date_added { get; set; }
-        public string date_last_used { get; set; }
-        public string guid { get; set; }
-        public string id { get; set; }
-        public string name { get; set; }
-        public string type { get; set; }
-
     }
 }

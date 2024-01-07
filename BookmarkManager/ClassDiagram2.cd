@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BookmarkManager.Alphabetical">
+    <Position X="0.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>4AIMAAAQACAgAQAEAACAAAACAABgBAAIAEABAAgQAGQ=</HashCode>
+      <FileName>Alphabetical.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.Bookmark">
+    <Position X="9.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAQAAAAAAAAEAAANAAAAAgAAAAAAAgA=</HashCode>
+      <FileName>Bookmark.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.BookmarkAdd">
+    <Position X="3.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>ADAAAAQSAKAEJBAAAACASAACCAAoEAAoAAAAYAAAAGA=</HashCode>
+      <FileName>BookmarkAdd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.BookmarkData">
+    <Position X="11.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAEAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BookmarkData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.BookmarkMethods">
+    <Position X="13" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAgAAAIAIABAAQAAAgAEQAAgEAAAAAACFIQIRoQA=</HashCode>
+      <FileName>BookmarkMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.Folder">
+    <Position X="9.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAQAAAAAAAAEAAAFAAAAAgAAAAAAAgA=</HashCode>
+      <FileName>Folder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.Node">
+    <Position X="11.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAARAAAAAAAAAAAAMAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.Program">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.Rootobject">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAEAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rootobject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.URL">
+    <Position X="11.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAEAAANAAAAAgAAAAAAAgA=</HashCode>
+      <FileName>URL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.Properties.Resources">
+    <Position X="17.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BookmarkManager.Properties.Settings">
+    <Position X="17.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BoomarkManager.Tags">
+    <Position X="6.75" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AqAEAAAQEKACAwAEAASAAAACSAABQAIIgEghAABgAGA=</HashCode>
+      <FileName>Tags.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

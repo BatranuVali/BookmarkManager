@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base.cs" />
     <Compile Include="Bookmark.cs" />
     <Compile Include="BookmarkAdd.cs">
       <SubType>Form</SubType>
@@ -94,6 +95,7 @@
     <EmbeddedResource Include="Tags.resx">
       <DependentUpon>Tags.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ClassDiagram2.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
